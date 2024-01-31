@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomePageComponent } from './components/home-page/home-page.component';
+import { UserEditPageComponent } from './components/user/user-edit-page/user-edit-page.component';
 
 export const routes: Routes = [
   {
@@ -13,6 +14,14 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./components/home-page/home-page.module').then(
         (m) => m.HomePageModule
+      ),
+  },
+  {
+    path: ':idn',
+    component: UserEditPageComponent,
+    loadChildren: () =>
+      import('./components/user/user-edit-page/user-edit-page.module').then(
+        (m) => m.UserEditPageModule
       ),
   },
 ];

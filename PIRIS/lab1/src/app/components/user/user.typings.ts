@@ -19,9 +19,9 @@ export interface User {
   martialStatus: UserMartialStatus;
   citizenship: UserCitizenship;
   disability: UserDisability;
-  pensionary: Boolean;
+  pensionary: boolean;
   monthlyIncome: Number;
-  conscript: Boolean;
+  conscript: boolean;
 }
 
 export enum UserCity {
@@ -47,6 +47,7 @@ export enum UserCitizenship {
 }
 
 export enum UserDisability {
+  None = 'None',
   FirstDegree = 'FirstDegree',
   SecondDegree = 'SecondDegree',
   ThirdDegree = 'ThirdDegree',

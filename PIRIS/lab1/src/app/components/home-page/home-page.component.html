@@ -1,5 +1,12 @@
 <app-header></app-header>
-<app-user-card-list [cardList]="userCardList"></app-user-card-list>
+<app-user-card-list
+  *ngIf="(userCardList$ | async)?.length; else emptyListLabel"
+  [cardList]="userCardList$ | async"
+></app-user-card-list>
+<ng-template #emptyListLabel
+  ><h1 class="home-page__empty-list-label">No bank users added</h1></ng-template
+>
+
 <button
   class="home-page__add-user-button"
   mat-fab

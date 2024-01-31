@@ -1,4 +1,4 @@
-<ng-container *ngIf="cardList.length; else emptyListLabel">
+<ng-container *ngIf="cardList?.length">
   <header class="user-card-list__header">
     <div class="user-card-list__header-item">First Name</div>
     <div class="user-card-list__header-item">Last Name</div>
@@ -7,12 +7,13 @@
   </header>
   <mat-list role="list">
     <ng-container *ngFor="let card of cardList">
-      <mat-list-item role="listitem">
+      <mat-list-item
+        role="listitem"
+        (click)="goToEditPage(card.identificationNumber)"
+      >
         <app-user-card [card]="card"></app-user-card>
       </mat-list-item>
       <mat-divider></mat-divider
     ></ng-container>
   </mat-list>
 </ng-container>
-
-<ng-template #emptyListLabel>No bank users added</ng-template>
