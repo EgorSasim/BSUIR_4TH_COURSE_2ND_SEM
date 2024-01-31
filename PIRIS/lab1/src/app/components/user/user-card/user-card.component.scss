@@ -1,0 +1,13 @@
+.user-card {
+  display: flex;
+  width: 100%;
+  height: auto;
+  justify-content: space-between;
+}
+
+.user-card__item {
+  width: 25%;
+  overflow: hidden;
+  margin-right: 0.8rem;
+  flex-basis: 100%;
+}

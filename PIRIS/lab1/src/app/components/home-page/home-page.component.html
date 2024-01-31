@@ -1,0 +1,11 @@
+<app-header></app-header>
+<app-user-card-list [cardList]="userCardList"></app-user-card-list>
+<button
+  class="home-page__add-user-button"
+  mat-fab
+  color="primary"
+  aria-label="Example icon button with a delete icon"
+  (click)="showAddUserModal()"
+>
+  <mat-icon>add</mat-icon>
+</button>
