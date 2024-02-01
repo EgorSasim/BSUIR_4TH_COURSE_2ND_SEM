@@ -7,8 +7,8 @@ import { User } from '../user.typings';
 export class UserEditPageService {
   constructor(private userApiService: UserApiService) {}
 
-  public getUser(identificationNumber: string): Observable<User> {
-    return this.userApiService.getUser(identificationNumber);
+  public getUser(id: string): Observable<User> {
+    return this.userApiService.getUser(id);
   }
 
   public updateUser(user: User): Observable<void> {

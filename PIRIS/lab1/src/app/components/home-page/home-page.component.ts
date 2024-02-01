@@ -9,7 +9,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CreateUserModalComponent } from '../user/create-user-modal/create-user-modal.component';
 import { User } from '../user/user.typings';
 import { HomePageService } from './home-page.service';
-import { Observable, filter, switchMap } from 'rxjs';
+import { Observable, filter, map, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -37,12 +37,16 @@ export class HomePageComponent {
     dialogRef
       .afterClosed()
       .pipe(
-        filter((user) => !!user),
+        filter((user: User) => !!user),
         switchMap((user) => this.homePageService.addUser(user))
       )
       .subscribe(() => {
         this.userCardList$ = this.homePageService.getUserCards();
         this.changeDetectorRef.detectChanges();
       });
+  }
+
+  public removeUser(id: string): void {
+    this.homePageService.removeUser(id).subscribe(() => {});
   }
 }

@@ -2,6 +2,7 @@
 <app-user-card-list
   *ngIf="(userCardList$ | async)?.length; else emptyListLabel"
   [cardList]="userCardList$ | async"
+  (userRemove)="removeUser($event)"
 ></app-user-card-list>
 <ng-template #emptyListLabel
   ><h1 class="home-page__empty-list-label">No bank users added</h1></ng-template

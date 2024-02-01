@@ -15,4 +15,8 @@ export class HomePageService {
   public addUser(user: User): Observable<void> {
     return this.userApiService.addUser(user);
   }
+
+  public removeUser(id: string): Observable<void> {
+    return this.userApiService.removeUser(id);
+  }
 }

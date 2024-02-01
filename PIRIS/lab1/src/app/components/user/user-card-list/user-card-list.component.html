@@ -7,11 +7,11 @@
   </header>
   <mat-list role="list">
     <ng-container *ngFor="let card of cardList">
-      <mat-list-item
-        role="listitem"
-        (click)="goToEditPage(card.identificationNumber)"
-      >
-        <app-user-card [card]="card"></app-user-card>
+      <mat-list-item role="listitem" (click)="goToEditPage(card.id)">
+        <app-user-card
+          [card]="card"
+          (remove)="removeUser($event)"
+        ></app-user-card>
       </mat-list-item>
       <mat-divider></mat-divider
     ></ng-container>

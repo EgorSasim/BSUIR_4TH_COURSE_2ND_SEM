@@ -17,7 +17,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: ':idn',
+    path: ':id',
     component: UserEditPageComponent,
     loadChildren: () =>
       import('./components/user/user-edit-page/user-edit-page.module').then(

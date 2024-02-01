@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserCard } from '../../components/user/user-card/user-card.typings';
-import { Observable, from, of, tap } from 'rxjs';
+import { Observable, from, map, of, tap } from 'rxjs';
 import { User } from '../../components/user/user.typings';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { doc, getDoc } from '@angular/fire/firestore';
@@ -9,113 +9,50 @@ import { doc, getDoc } from '@angular/fire/firestore';
   providedIn: 'root',
 })
 export class UserApiService {
-  constructor(private store: AngularFirestore) {}
-  // private users: User[] = [
-  //   {
-  //     firstName: 'lolkasdflkajsdfasjdlfkasjldfjlasdjflasdjlka',
-  //     lastName: 'lol2a',
-  //     passportNumber: 'num123',
-  //     passportSeries: 'ser132',
-  //     actualResidenceAddress: 'adsfa',
-  //     actualResidenceCity: UserCity.Baranovichi,
-  //     birthDate: new Date(),
-  //     citizenship: UserCitizenship.Russia,
-  //     conscript: true,
-  //     dateOfIssue: new Date(),
-  //     disability: UserDisability.DotaPlusPlayer,
-  //     identificationNumber: 'dsafsdf',
-  //     issuedBy: 'someone',
-  //     martialStatus: UserMartialStatus.Single,
-  //     middleName: 'asdfasd',
-  //     monthlyIncome: 2321.23,
-  //     pensionary: false,
-  //     placeOfBirth: 'asdf',
-  //     email: 'some@mail.ru',
-  //     homePhoneNumber: '8023233242',
-  //     mobilePhoneNumber: '923840238',
-  //     workPlace: 'asshole',
-  //     workPosition: 'skdjflaksdf',
-  //   },
-  //   {
-  //     firstName: 'lolkasdflkajsdfasjdlfkasjldfjlasdjflasdjlka',
-  //     lastName: 'lol2a',
-  //     passportNumber: 'num123',
-  //     passportSeries: 'ser132',
-  //     actualResidenceAddress: 'adsfa',
-  //     actualResidenceCity: UserCity.Baranovichi,
-  //     birthDate: new Date(),
-  //     citizenship: UserCitizenship.Russia,
-  //     conscript: true,
-  //     dateOfIssue: new Date(),
-  //     disability: UserDisability.DotaPlusPlayer,
-  //     identificationNumber: 'dsafsdf',
-  //     issuedBy: 'someone',
-  //     martialStatus: UserMartialStatus.Single,
-  //     middleName: 'asdfasd',
-  //     monthlyIncome: 2321.23,
-  //     pensionary: false,
-  //     placeOfBirth: 'asdf',
-  //     email: 'some@mail.ru',
-  //     homePhoneNumber: '8023233242',
-  //     mobilePhoneNumber: '923840238',
-  //     workPlace: 'asshole',
-  //     workPosition: 'skdjflaksdf',
-  //   },
-  //   {
-  //     firstName: 'lolkasdflkajsdfasjdlfkasjldfjlasdjflasdjlka',
-  //     lastName: 'lol2a',
-  //     passportNumber: 'num123',
-  //     passportSeries: 'ser132',
-  //     actualResidenceAddress: 'adsfa',
-  //     actualResidenceCity: UserCity.Baranovichi,
-  //     birthDate: new Date(),
-  //     citizenship: UserCitizenship.Russia,
-  //     conscript: true,
-  //     dateOfIssue: new Date(),
-  //     disability: UserDisability.DotaPlusPlayer,
-  //     identificationNumber: 'dsafsdf',
-  //     issuedBy: 'someone',
-  //     martialStatus: UserMartialStatus.Single,
-  //     middleName: 'asdfasd',
-  //     monthlyIncome: 2321.23,
-  //     pensionary: false,
-  //     placeOfBirth: 'asdf',
-  //     email: 'some@mail.ru',
-  //     homePhoneNumber: '8023233242',
-  //     mobilePhoneNumber: '923840238',
-  //     workPlace: 'asshole',
-  //     workPosition: 'skdjflaksdf',
-  //   },
-  // ];
+  private readonly usersCollectionName = 'users';
 
-  public getUsers(): Observable<UserCard[]> {
-    const usersCollectionRef: Observable<UserCard[]> = this.store
-      .collection('users')
-      .valueChanges()
-      .pipe(tap((val) => console.log('val: ', val))) as Observable<UserCard[]>;
+  constructor(private store: AngularFirestore) {}
+
+  public getUsers(): Observable<User[]> {
+    const usersCollectionRef: Observable<User[]> = this.store
+      .collection(this.usersCollectionName)
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((change) => {
+            const data: User = change.payload.doc.data() as User;
+            const id = change.payload.doc.id;
+            return { id, ...data };
+          })
+        )
+      ) as Observable<User[]>;
     return usersCollectionRef;
   }
 
   public addUser(user: User): Observable<void> {
-    const usersCollectionRef = this.store.collection('users');
-    return from(
-      usersCollectionRef.doc(user.identificationNumber).set({ ...user })
-    );
+    const usersCollectionRef = this.store.collection(this.usersCollectionName);
+    delete user.id;
+    return from(usersCollectionRef.doc().set({ ...user }));
   }
 
-  public getUser(identificationNumber): Observable<User> {
+  public getUser(id: string): Observable<User> {
     const userDocumentRef = this.store
-      .collection('users')
-      .doc(identificationNumber)
+      .collection(this.usersCollectionName)
+      .doc(id)
       .valueChanges();
     return userDocumentRef as Observable<User>;
   }
 
   public updateUser(user: User): Observable<void> {
     const userDocumentRef = this.store
-      .collection('users')
-      .doc(user.identificationNumber)
+      .collection(this.usersCollectionName)
+      .doc(user.id)
       .update(user);
     return from(userDocumentRef);
+  }
+
+  public removeUser(id: string): Observable<void> {
+    const usersCollectionRef = this.store.collection(this.usersCollectionName);
+    return from(usersCollectionRef.doc(id).delete());
   }
 }

@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { UserCard } from '../user-card/user-card.typings';
 import { Router } from '@angular/router';
 
@@ -10,11 +16,15 @@ import { Router } from '@angular/router';
 })
 export class UserCardListComponent {
   @Input() cardList: UserCard[] = [];
+  @Output() userRemove: EventEmitter<string> = new EventEmitter();
 
   constructor(private router: Router) {}
 
-  public goToEditPage(identificationNumber: string): void {
-    this.router.navigate([identificationNumber]);
-    console.log('got to edit page');
+  public removeUser(id: string) {
+    this.userRemove.emit(id);
+  }
+
+  public goToEditPage(id: string): void {
+    this.router.navigate([id]);
   }
 }

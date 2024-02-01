@@ -13,6 +13,7 @@ import { ConvertToForm } from '../../../common/typings/form.typings';
 export class CreateUserModalBuilder {
   public createForm(): FormGroup<ConvertToForm<Required<User>>> {
     return new FormGroup({
+      id: new FormControl(null),
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
       middleName: new FormControl('', [Validators.required]),
