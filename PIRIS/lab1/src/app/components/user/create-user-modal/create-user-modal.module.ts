@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [CreateUserModalComponent],
@@ -22,6 +23,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     CommonModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatIconModule,
   ],
   exports: [CreateUserModalComponent],
 })

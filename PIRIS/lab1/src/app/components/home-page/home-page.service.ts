@@ -19,4 +19,8 @@ export class HomePageService {
   public removeUser(id: string): Observable<void> {
     return this.userApiService.removeUser(id);
   }
+
+  public getSortedByLastNameUserCards(): Observable<UserCard[]> {
+    return this.userApiService.getSortedUsers();
+  }
 }

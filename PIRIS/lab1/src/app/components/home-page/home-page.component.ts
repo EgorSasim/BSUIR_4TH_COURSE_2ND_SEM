@@ -49,4 +49,8 @@ export class HomePageComponent {
   public removeUser(id: string): void {
     this.homePageService.removeUser(id).subscribe(() => {});
   }
+
+  public sortUserCardList(): void {
+    this.userCardList$ = this.homePageService.getSortedByLastNameUserCards();
+  }
 }

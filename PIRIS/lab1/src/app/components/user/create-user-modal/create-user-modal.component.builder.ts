@@ -24,26 +24,16 @@ export class CreateUserModalBuilder {
       dateOfIssue: new FormControl(null, [Validators.required]),
       identificationNumber: new FormControl('', [Validators.required]),
       placeOfBirth: new FormControl('', [Validators.required]),
-      actualResidenceCity: new FormControl(UserCity.Baranovichi as UserCity, [
-        Validators.required,
-      ]),
+      actualResidenceCity: new FormControl(null, [Validators.required]),
       actualResidenceAddress: new FormControl('', [Validators.required]),
       homePhoneNumber: new FormControl(''),
       mobilePhoneNumber: new FormControl(''),
       email: new FormControl(''),
       workPlace: new FormControl(''),
       workPosition: new FormControl(''),
-      martialStatus: new FormControl(
-        UserMartialStatus.Single as UserMartialStatus,
-        [Validators.required]
-      ),
-      citizenship: new FormControl(UserCitizenship.Belarus as UserCitizenship, [
-        Validators.required,
-      ]),
-      disability: new FormControl(
-        UserDisability.DotaPlusPlayer as UserDisability,
-        [Validators.required]
-      ),
+      martialStatus: new FormControl(null, [Validators.required]),
+      citizenship: new FormControl(null, [Validators.required]),
+      disability: new FormControl(null, [Validators.required]),
       pensionary: new FormControl(false, [Validators.required]),
       monthlyIncome: new FormControl(null, [Validators.required]),
       conscript: new FormControl(false, [Validators.required]),

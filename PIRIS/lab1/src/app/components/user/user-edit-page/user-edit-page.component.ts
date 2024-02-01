@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map, of, switchMap } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { UserEditPageService } from './user-edit-page.service';
 import { FormGroup, ValidationErrors } from '@angular/forms';
@@ -41,16 +41,7 @@ export class UserEditPageComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.activatedRoute.params
-      .pipe(
-        map((params) => params['id']),
-        filter((id) => !!id),
-        tap((id) => (this.userId = id)),
-        switchMap((id) => this.userEditPageService.getUser(id))
-      )
-      .subscribe((user) => {
-        this.formGroup.setValue({ id: this.userId, ...user } as Required<User>);
-      });
+    this.handleRouteParams();
   }
 
   public getErrorMessage(errors: ValidationErrors): string {
@@ -79,6 +70,20 @@ export class UserEditPageComponent implements OnInit {
             ? 'home'
             : this.backNavigationService.getPreviousUrl(),
         ]);
+      });
+  }
+
+  private handleRouteParams(): void {
+    this.activatedRoute.params
+      .pipe(
+        map((params) => params['id']),
+        filter((id) => !!id),
+        tap((id) => (this.userId = id)),
+        switchMap((id) => this.userEditPageService.getUser(id))
+      )
+      .subscribe((user) => {
+        console.log('user ', user);
+        this.formGroup.setValue({ id: this.userId, ...user } as Required<User>);
       });
   }
 }

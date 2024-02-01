@@ -1,6 +1,6 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Edit User</mat-card-title>
+    <mat-card-title>New User</mat-card-title>
   </mat-card-header>
   <mat-card-content class="create-user-modal__content">
     <div class="create-user-modal__content-side">
@@ -129,6 +129,7 @@
           placeholder="monthlyIncome"
           [formControl]="formGroup.controls['monthlyIncome']"
         />
+        <mat-icon matSuffix>attach_money</mat-icon>
         <mat-error *ngIf="formGroup.controls['monthlyIncome'].errors">
           {{
             getErrorMessage(formGroup.controls["monthlyIncome"].errors)
@@ -241,7 +242,8 @@
           matNativeControl
           [formControl]="formGroup.controls['actualResidenceCity']"
         >
-          <option *ngFor="let city of residenceCities" value="city">
+          <option value="" selected></option>
+          <option *ngFor="let city of residenceCities">
             {{ city }}
           </option>
         </select>
@@ -252,10 +254,8 @@
           matNativeControl
           [formControl]="formGroup.controls['martialStatus']"
         >
-          <option
-            *ngFor="let martialStatus of martialStatuses"
-            value="martialStatus"
-          >
+          <option value="" selected></option>
+          <option *ngFor="let martialStatus of martialStatuses">
             {{ martialStatus }}
           </option>
         </select>
@@ -266,7 +266,8 @@
           matNativeControl
           [formControl]="formGroup.controls['citizenship']"
         >
-          <option *ngFor="let citizenship of citizenShips" value="citizenship">
+          <option value="" selected></option>
+          <option *ngFor="let citizenship of citizenShips">
             {{ citizenship }}
           </option>
         </select>
@@ -278,7 +279,8 @@
           matNativeControl
           [formControl]="formGroup.controls['disability']"
         >
-          <option *ngFor="let disability of disabilities" value="martialStatus">
+          <option value="" selected></option>
+          <option *ngFor="let disability of disabilities">
             {{ disability }}
           </option>
         </select>
