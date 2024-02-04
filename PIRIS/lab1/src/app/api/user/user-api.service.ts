@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Observable, from, map } from 'rxjs';
+import { Observable, from, map, of, tap } from 'rxjs';
 import { User } from '../../components/user/user.typings';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { SameUserErrorCode } from './user-api.typings';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserApiService {
+  private usersCache: User[];
   private readonly usersCollectionName = 'users';
 
   constructor(private store: AngularFirestore) {}
@@ -20,9 +22,12 @@ export class UserApiService {
           changes.map((change) => {
             const data: User = change.payload.doc.data() as User;
             const id = change.payload.doc.id;
-            return { id, ...data };
+            return { ...data, id };
           })
-        )
+        ),
+        tap((users) => {
+          this.updateUsersCache(users);
+        })
       ) as Observable<User[]>;
     return usersCollectionRef;
   }
@@ -38,15 +43,17 @@ export class UserApiService {
             const id = change.payload.doc.id;
             return { id, ...data };
           })
-        )
+        ),
+        tap((users) => this.updateUsersCache(users))
       ) as Observable<User[]>;
     return usersCollectionRef;
   }
 
   public addUser(user: User): Observable<void> {
+    if (this.isSameUserExists(user)) {
+      return of();
+    }
     const usersCollectionRef = this.store.collection(this.usersCollectionName);
-    delete user.id;
-
     return from(usersCollectionRef.doc().set({ ...user }));
   }
 
@@ -82,11 +89,41 @@ export class UserApiService {
     return from(usersCollectionRef.doc(id).delete());
   }
 
-  private areSameUsers(existedUser, user) {
-    return (
-      existedUser.identificationNumber === user.identificationNumber ||
-      (existedUser.passportNumber === user.passportNumber &&
-        existedUser.passportSeries === user.passportSeries)
+  private showSameUserExistanceError(sameUserErrorCode: SameUserErrorCode) {
+    switch (sameUserErrorCode) {
+      case SameUserErrorCode.SameIdentificationNumber:
+        alert('Error: Same identification number');
+        return;
+      case SameUserErrorCode.SamePassport:
+        alert('Error: Same passport');
+    }
+  }
+
+  private isSameUserExists(user: User): boolean {
+    const isSameIdentificationNumber = this.usersCache.find(
+      (cachedUser) =>
+        cachedUser.identificationNumber === user.identificationNumber
     );
+    if (isSameIdentificationNumber) {
+      this.showSameUserExistanceError(
+        SameUserErrorCode.SameIdentificationNumber
+      );
+      return true;
+    }
+    const isSamePassport = this.usersCache.find(
+      (cachedUser) =>
+        cachedUser.passportNumber === user.passportNumber &&
+        cachedUser.passportSeries === user.passportSeries
+    );
+    if (isSamePassport) {
+      this.showSameUserExistanceError(SameUserErrorCode.SamePassport);
+      return true;
+    }
+
+    return false;
+  }
+
+  private updateUsersCache(users: User[]): void {
+    this.usersCache = [...users];
   }
 }

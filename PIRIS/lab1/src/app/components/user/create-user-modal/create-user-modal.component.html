@@ -175,7 +175,7 @@
         >
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>Enter your email</mat-label>
+        <mat-label>Enter workPosition</mat-label>
         <input
           matInput
           placeholder="workPosition"
@@ -303,6 +303,9 @@
   </mat-card-content>
   <mat-card-actions class="create-user-modal__footer">
     <button mat-raised-button color="warn" (click)="onClose()">Close</button>
+    <button mat-raised-button color="primary" (click)="fillUserData()">
+      Autofill
+    </button>
     <button mat-raised-button color="primary" (click)="onSubmit()">
       Submit
     </button>

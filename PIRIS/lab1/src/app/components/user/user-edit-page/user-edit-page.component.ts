@@ -63,7 +63,7 @@ export class UserEditPageComponent implements OnInit {
       return;
     }
     this.userEditPageService
-      .updateUser(this.formGroup.value as User)
+      .updateUser({ ...(this.formGroup.value as User), id: this.userId })
       .subscribe(() => {
         this.router.navigate([
           this.backNavigationService.areCurrAndPrevUrlSame
@@ -82,7 +82,6 @@ export class UserEditPageComponent implements OnInit {
         switchMap((id) => this.userEditPageService.getUser(id))
       )
       .subscribe((user) => {
-        console.log('user ', user);
         this.formGroup.setValue({ id: this.userId, ...user } as Required<User>);
       });
   }

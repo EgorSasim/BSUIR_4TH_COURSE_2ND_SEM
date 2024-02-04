@@ -10,8 +10,8 @@ import {
   UserDisability,
   UserMartialStatus,
 } from '../user.typings';
-import { FormControlError } from '../../../common/typings/error.typings';
 import { getControlErorMessage } from '../../../common/helpers/control-errors';
+import { AUTO_GENERATED_USER_DATA } from './create-user-modal.constants';
 
 @Component({
   selector: 'app-create-user-modal',
@@ -45,6 +45,10 @@ export class CreateUserModalComponent {
       return;
     }
     this.matDialogRef.close(this.formGroup.value);
+  }
+
+  public fillUserData(): void {
+    this.formGroup.setValue(AUTO_GENERATED_USER_DATA as Required<User>);
   }
 
   public getErrorMessage(errors: ValidationErrors): string {
