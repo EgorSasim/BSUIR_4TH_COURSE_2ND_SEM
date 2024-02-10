@@ -16,14 +16,17 @@ export class CreateUserModalBuilder {
       firstName: new FormControl('', [
         Validators.required,
         whiteSpaceValidator(),
+        Validators.pattern('[A-Za-z- ]*'),
       ]),
       lastName: new FormControl('', [
         Validators.required,
         whiteSpaceValidator(),
+        Validators.pattern('[A-Za-z- ]*'),
       ]),
       middleName: new FormControl('', [
         Validators.required,
         whiteSpaceValidator(),
+        Validators.pattern('[A-Za-z- ]*'),
       ]),
       birthDate: new FormControl(null, [
         Validators.required,
