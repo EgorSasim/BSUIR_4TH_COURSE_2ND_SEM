@@ -1,11 +1,19 @@
-.home-page__add-user-button {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
+.home-page-nav-item {
+  background-color: lightblue;
 }
 
-.home-page__empty-list-label {
-  display: flex;
-  justify-content: center;
-  padding: 2rem;
+.home-page-nav-item__link {
+  color: white;
+  font-family: helvetica;
+  font-weight: 1000;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: black;
+  }
 }

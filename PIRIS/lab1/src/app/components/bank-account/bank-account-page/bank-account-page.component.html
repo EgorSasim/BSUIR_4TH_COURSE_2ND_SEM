@@ -1,0 +1,11 @@
+<button mat-raised-button color="primary" (click)="goToHomePage()">
+  <mat-icon>arrow_back</mat-icon>
+</button>
+<app-bank-account-list
+  [accountsInfo]="accountsInfo$ | async"
+></app-bank-account-list>
+<div class="bank-account-page__controls">
+  <button mat-raised-button color="primary" (click)="showCreateDepositModal()">
+    Create Deposit
+  </button>
+</div>

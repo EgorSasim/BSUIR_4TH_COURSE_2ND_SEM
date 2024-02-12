@@ -1,0 +1,18 @@
+<header class="bank-account-list__header">
+  <div class="bank-account-list__header-item">User first Name</div>
+  <div class="bank-account-list__header-item">User last Name</div>
+  <div class="bank-account-list__header-item">User identification number</div>
+  <div class="bank-account-list__header-item">Deposit name</div>
+  <div class="bank-account-list__header-item">Deposit serial number</div>
+</header>
+
+<mat-list role="list">
+  <ng-container *ngFor="let accountInfo of accountsInfo; let i = index">
+    <mat-list-item role="listitem">
+      <app-bank-account-card
+        [accountInfo]="accountInfo"
+      ></app-bank-account-card>
+    </mat-list-item>
+    <mat-divider *ngIf="accountsInfo?.length - 1 !== i"></mat-divider>
+  </ng-container>
+</mat-list>

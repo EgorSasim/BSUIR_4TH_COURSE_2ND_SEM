@@ -1,0 +1,46 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { CreateDepositModalComponent } from '../deposit/create-deposit-modal/create-deposit-modal.component';
+import { Router } from '@angular/router';
+import { BankAccountPageService } from './bank-account-page.service';
+import { DepositContract } from '../deposit/deposit.typings';
+import { filter, switchMap, tap } from 'rxjs';
+
+@Component({
+  selector: 'app-bank-account-page',
+  templateUrl: './bank-account-page.component.html',
+  styleUrl: './bank-account-page.component.scss',
+  providers: [BankAccountPageService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class BankAccountPageComponent {
+  public accountsInfo$ = this.bankAccountPageService.getAccountsInfo();
+
+  constructor(
+    private matDialog: MatDialog,
+    private router: Router,
+    private bankAccountPageService: BankAccountPageService
+  ) {}
+
+  public showCreateDepositModal(): void {
+    const config: MatDialogConfig = {
+      hasBackdrop: true,
+    };
+
+    const dialogRef = this.matDialog.open(CreateDepositModalComponent, config);
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((data) => !!data),
+        switchMap((contract: DepositContract) => {
+          console.log('contract: ', contract);
+          return this.bankAccountPageService.createDepositContract(contract);
+        })
+      )
+      .subscribe();
+  }
+
+  public goToHomePage(): void {
+    this.router.navigate(['/home']);
+  }
+}

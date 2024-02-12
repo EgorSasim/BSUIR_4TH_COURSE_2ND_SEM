@@ -25,6 +25,6 @@ export class UserCardListComponent {
   }
 
   public goToEditPage(id: string): void {
-    this.router.navigate([id]);
+    this.router.navigate(['user', id]);
   }
 }

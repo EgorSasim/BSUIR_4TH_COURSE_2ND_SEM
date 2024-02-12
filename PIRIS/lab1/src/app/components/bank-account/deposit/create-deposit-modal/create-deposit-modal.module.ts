@@ -1,33 +1,26 @@
 import { NgModule } from '@angular/core';
-import { UserEditPageComponent } from './user-edit-page.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CreateDepositModalComponent } from './create-deposit-modal.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  declarations: [UserEditPageComponent],
+  declarations: [CreateDepositModalComponent],
   imports: [
-    ReactiveFormsModule,
-    FormsModule,
     MatCardModule,
     MatButtonModule,
-    MatInputModule,
     MatFormFieldModule,
-    MatCheckboxModule,
+    ReactiveFormsModule,
+    MatInputModule,
     CommonModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatIconModule,
   ],
-  exports: [UserEditPageComponent],
+  exports: [CreateDepositModalComponent],
 })
-export class UserEditPageModule {
-  constructor() {}
-}
+export class CreateDepositModalModule {}

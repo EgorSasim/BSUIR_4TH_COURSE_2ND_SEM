@@ -1,0 +1,13 @@
+<div *ngIf="accountInfo" class="bank-account-card">
+  <div class="bank-account-card__item">{{ accountInfo.userFirstName }}</div>
+  <div class="bank-account-card__item">{{ accountInfo.userLastName }}</div>
+  <div class="bank-account-card__item">
+    {{ accountInfo.userIdentificationNumber }}
+  </div>
+  <div class="bank-account-card__item">
+    {{ accountInfo.depositContractName }}
+  </div>
+  <div class="bank-account-card__item">
+    {{ accountInfo.depositContractSerialNumber }}
+  </div>
+</div>

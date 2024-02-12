@@ -3,19 +3,19 @@ import { Observable, from, map, of, tap } from 'rxjs';
 import { User } from '../../components/user/user.typings';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { SameUserErrorCode } from './user-api.typings';
+import { USERS_COLLECTION_NAME } from './user-api.constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserApiService {
   private usersCache: User[];
-  private readonly usersCollectionName = 'users';
 
   constructor(private store: AngularFirestore) {}
 
   public getUsers(): Observable<User[]> {
     const usersCollectionRef: Observable<User[]> = this.store
-      .collection(this.usersCollectionName)
+      .collection(USERS_COLLECTION_NAME)
       .snapshotChanges()
       .pipe(
         map((changes) =>
@@ -34,7 +34,7 @@ export class UserApiService {
 
   public getSortedUsers(): Observable<User[]> {
     const usersCollectionRef: Observable<User[]> = this.store
-      .collection(this.usersCollectionName, (ref) => ref.orderBy('lastName'))
+      .collection(USERS_COLLECTION_NAME, (ref) => ref.orderBy('lastName'))
       .snapshotChanges()
       .pipe(
         map((changes) =>
@@ -53,13 +53,13 @@ export class UserApiService {
     if (this.isSameUserExists(user)) {
       return of();
     }
-    const usersCollectionRef = this.store.collection(this.usersCollectionName);
+    const usersCollectionRef = this.store.collection(USERS_COLLECTION_NAME);
     return from(usersCollectionRef.doc().set({ ...user }));
   }
 
   public getUser(id: string): Observable<User> {
     const userDocumentRef = this.store
-      .collection(this.usersCollectionName)
+      .collection(USERS_COLLECTION_NAME)
       .doc(id)
       .valueChanges()
       .pipe(
@@ -78,14 +78,14 @@ export class UserApiService {
 
   public updateUser(user: User): Observable<void> {
     const userDocumentRef = this.store
-      .collection(this.usersCollectionName)
+      .collection(USERS_COLLECTION_NAME)
       .doc(user.id)
       .update(user);
     return from(userDocumentRef);
   }
 
   public removeUser(id: string): Observable<void> {
-    const usersCollectionRef = this.store.collection(this.usersCollectionName);
+    const usersCollectionRef = this.store.collection(USERS_COLLECTION_NAME);
     return from(usersCollectionRef.doc(id).delete());
   }
 

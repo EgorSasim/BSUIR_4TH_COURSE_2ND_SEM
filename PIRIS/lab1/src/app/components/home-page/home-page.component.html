@@ -1,24 +1,12 @@
-<app-header></app-header>
-<ng-container *ngIf="(userCardList$ | async)?.length; else emptyListLabel">
-  <button mat-raised-button color="primary" (click)="sortUserCardList()">
-    Sort by Last names
-  </button>
-  <app-user-card-list
-    [cardList]="userCardList$ | async"
-    (userRemove)="removeUser($event)"
-  ></app-user-card-list>
-</ng-container>
-
-<ng-template #emptyListLabel>
-  <h1 class="home-page__empty-list-label">No bank users added</h1>
-</ng-template>
-
-<button
-  class="home-page__add-user-button"
-  mat-fab
-  color="primary"
-  aria-label="Example icon button with a delete icon"
-  (click)="showAddUserModal()"
->
-  <mat-icon>add</mat-icon>
-</button>
+<mat-grid-list cols="2" rowHeigmat-grid-tile="2:1">
+  <mat-grid-tile class="home-page-nav-item"
+    ><a class="home-page-nav-item__link" href="/user-page"
+      >User Page</a
+    ></mat-grid-tile
+  >
+  <mat-grid-tile class="home-page-nav-item"
+    ><a class="home-page-nav-item__link" href="/bank-account-page"
+      >Bank Account Page</a
+    ></mat-grid-tile
+  >
+</mat-grid-list>

@@ -35,12 +35,12 @@ export class UserEditPageComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private userEditPageService: UserEditPageService,
-    private backNavigationService: BackNavigationService,
     private router: Router,
     private createUserModalBuilder: CreateUserModalBuilder
   ) {}
 
   public ngOnInit(): void {
+    console.log('init');
     this.handleRouteParams();
   }
 
@@ -49,11 +49,7 @@ export class UserEditPageComponent implements OnInit {
   }
 
   public onClose(): void {
-    this.router.navigate([
-      this.backNavigationService.areCurrAndPrevUrlSame
-        ? 'home'
-        : this.backNavigationService.getPreviousUrl(),
-    ]);
+    this.router.navigate(['/user-page']);
   }
 
   public onSubmit(): void {
@@ -65,17 +61,14 @@ export class UserEditPageComponent implements OnInit {
     this.userEditPageService
       .updateUser({ ...(this.formGroup.value as User), id: this.userId })
       .subscribe(() => {
-        this.router.navigate([
-          this.backNavigationService.areCurrAndPrevUrlSame
-            ? 'home'
-            : this.backNavigationService.getPreviousUrl(),
-        ]);
+        this.router.navigate(['/user-page']);
       });
   }
 
   private handleRouteParams(): void {
     this.activatedRoute.params
       .pipe(
+        tap((params) => console.log('params: ', params)),
         map((params) => params['id']),
         filter((id) => !!id),
         tap((id) => (this.userId = id)),

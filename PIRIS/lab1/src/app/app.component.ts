@@ -1,14 +1,11 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { CreateUserModalModule } from './components/user/create-user-modal/create-user-modal.module';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import {
-  AngularFireStorage,
-  AngularFireStorageModule,
-} from '@angular/fire/compat/storage';
-import { Firestore, collection, getDocs } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { HeaderModule } from './components/header/header.module';
+import { UserPageModule } from './components/user/user-page/user-page.module';
 
 @Component({
   selector: 'app-root',
@@ -16,10 +13,11 @@ import { Firestore, collection, getDocs } from '@angular/fire/firestore';
   imports: [
     CommonModule,
     RouterOutlet,
-    CreateUserModalModule,
     AngularFireDatabaseModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
+    HeaderModule,
+    UserPageModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
