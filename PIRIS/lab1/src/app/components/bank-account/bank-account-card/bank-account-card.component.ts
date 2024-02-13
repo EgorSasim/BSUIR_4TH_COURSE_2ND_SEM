@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { BankAccountInfo } from '../bank-account-list/bank-account-list.typings';
 
 @Component({
@@ -13,10 +7,6 @@ import { BankAccountInfo } from '../bank-account-list/bank-account-list.typings'
   styleUrl: './bank-account-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BankAccountCardComponent implements OnChanges {
+export class BankAccountCardComponent {
   @Input() public accountInfo: BankAccountInfo;
-
-  public ngOnChanges(changes: SimpleChanges): void {
-    console.log('accountInfo: ', this.accountInfo);
-  }
 }

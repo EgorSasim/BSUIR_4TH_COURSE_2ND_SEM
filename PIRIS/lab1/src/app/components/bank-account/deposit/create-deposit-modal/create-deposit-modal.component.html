@@ -100,21 +100,14 @@
 
         <mat-form-field>
           <mat-label>Choose user</mat-label>
-          <select
-            matNativeControl
-            [formControl]="formGroup.controls['userIdentificationNumber']"
-          >
+          <select matNativeControl [formControl]="formGroup.controls['userId']">
             <option value="" selected></option>
             <option
               *ngFor="let userInfo of usersInfo$ | async"
-              [value]="userInfo.identificationNumber"
+              [value]="userInfo.id"
             >
               {{
-                userInfo.firstName +
-                  " " +
-                  userInfo.lastName +
-                  " " +
-                  userInfo.identificationNumber
+                userInfo.firstName + " " + userInfo.lastName + " " + userInfo.id
               }}
             </option>
           </select>
@@ -137,11 +130,28 @@
         placeholder="Ex. It makes me feel..."
       ></textarea>
     </mat-form-field>
-    <div *ngIf="formGroup?.errors?.['dateCompareError']">
-      Possible errors: <br />
-      1.Start date cannot be more than end date <br />
-      2.Duratino cannot be less than end date <br />
-    </div>
+    <ng-container>
+      <div
+        class="create-deposit-modal-controls__errors"
+        *ngIf="formGroup?.errors?.['dateCompareError']"
+      >
+        Possible errors: <br />
+        1.Start date cannot be more than end date <br />
+        2.Duration cannot be less than end date <br />
+      </div>
+      <div
+        class="create-deposit-modal-controls__errors"
+        *ngIf="formGroup?.errors?.['invalidDepositDuration']"
+      >
+        Choosen dates interval not compared with deposit min or max duration
+      </div>
+      <div
+        class="create-deposit-modal-controls__errors"
+        *ngIf="formGroup?.errors?.['invalidDepositAmount']"
+      >
+        Invalid depost amount
+      </div>
+    </ng-container>
   </mat-card-content>
   <mat-card-actions class="create-deposit-modal__footer">
     <button mat-raised-button color="warn" (click)="onClose()">Close</button>

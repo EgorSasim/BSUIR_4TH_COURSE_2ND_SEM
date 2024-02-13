@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CreateDepositBuilder } from './create-deposit-modal.builder';
+import { CreateDepositModalBuilder } from './create-deposit-modal.builder';
 import {
   FormControl,
   FormGroup,
@@ -15,12 +15,24 @@ import { getControlErorMessage } from '../../../../common/helpers/control-errors
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { CreateDepositModalService } from './create-deposit-modal.service';
 import { UserDepositInfo } from './create-deposit-modal.typings';
+import {
+  AVAREAGE_DAY_PER_MONTH,
+  HOUR_PER_DAY,
+  MILLISECONDS_PER_SECOND,
+  MINUTES_PER_HOUR,
+  SECONDS_PER_MINUTE,
+} from '../../../../common/constants/time';
+import { getMonthDifference } from '../../../../common/helpers/dates';
 
 @Component({
   selector: 'app-create-deposit-modal',
   templateUrl: './create-deposit-modal.component.html',
   styleUrl: './create-deposit-modal.component.scss',
-  providers: [CreateDepositBuilder, MatSnackBar, CreateDepositModalService],
+  providers: [
+    CreateDepositModalBuilder,
+    MatSnackBar,
+    CreateDepositModalService,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateDepositModalComponent {
@@ -37,12 +49,13 @@ export class CreateDepositModalComponent {
     new FormControl(null, [Validators.required]);
 
   constructor(
-    private createDepositBuilder: CreateDepositBuilder,
+    private createDepositBuilder: CreateDepositModalBuilder,
     private dialogRef: MatDialogRef<CreateDepositModalComponent>,
     private matSnackBar: MatSnackBar,
     private createDepositModalService: CreateDepositModalService
   ) {
     this.handleDepositNameChange();
+    this.formGroup.valueChanges.subscribe((val) => console.log(val.userId));
   }
 
   public onClose(): void {
@@ -78,9 +91,16 @@ export class CreateDepositModalComponent {
   }
 
   private getDepositDescriptionOutput(deposit: Deposit): string {
+    if (!deposit) {
+      return '';
+    }
     let output = '';
     Object.entries(deposit).forEach(([key, value]) => {
-      output += `${key}: ${value}\n`;
+      if (value instanceof Date) {
+        output += `${key}: ${getMonthDifference(value, new Date())} monthes\n`;
+      } else {
+        output += `${key}: ${value}\n`;
+      }
     });
     return output;
   }

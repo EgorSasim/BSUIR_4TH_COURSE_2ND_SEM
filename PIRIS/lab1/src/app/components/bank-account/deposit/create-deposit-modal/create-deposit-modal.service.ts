@@ -14,7 +14,7 @@ export class CreateDepositModalService {
         users.map((user) => ({
           firstName: user.firstName,
           lastName: user.lastName,
-          identificationNumber: user.identificationNumber,
+          id: user.id,
         }))
       )
     );

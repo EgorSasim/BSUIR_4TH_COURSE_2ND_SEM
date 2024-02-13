@@ -8,7 +8,7 @@ export interface DepositContract {
   endDate: Date;
   duration: Date;
   amount: number;
-  userIdentificationNumber: User['identificationNumber'];
+  userId: User['id'];
   id?: string;
 }
 

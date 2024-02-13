@@ -21,19 +21,13 @@ export class DepositApiService {
     depositContract: DepositContract
   ): Observable<void> {
     const userCollectionRef = this.angularFireStore
-      .collection(USERS_COLLECTION_NAME, (ref) =>
-        ref.where(
-          'identificationNumber',
-          '==',
-          depositContract.userIdentificationNumber
-        )
-      )
+      .collection(USERS_COLLECTION_NAME)
+      .doc(depositContract.userId)
       .get();
 
     return userCollectionRef.pipe(
-      map((ref) => ref.docs[0].ref),
       switchMap((userRef) => {
-        return userRef
+        return userRef.ref
           .collection(DEPOSIT_CONTRACTS_COLLECTION_NAME)
           .add(depositContract);
       }),

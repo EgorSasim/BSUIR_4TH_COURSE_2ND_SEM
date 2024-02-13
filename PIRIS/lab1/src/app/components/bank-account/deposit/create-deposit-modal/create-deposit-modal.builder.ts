@@ -6,9 +6,10 @@ import { getRandomNumber } from '../../../../common/helpers/random-values';
 import { DEPOSIT_CONTRACT_SERIAL_NUMBER_LENGTH } from '../deposit.constants';
 import { compareDatesValidator } from '../../../../common/validators/validators';
 import { ValidatorDateCompareMode } from '../../../../common/validators/validators.typings';
+import { areContractFieldsAppropToChoosenDeposit } from '../../../../common/validators/deposit-validators';
 
 @Injectable()
-export class CreateDepositBuilder {
+export class CreateDepositModalBuilder {
   public createForm(): FormGroup<
     ConvertToForm<Required<Omit<DepositContract, 'id'>>>
   > {
@@ -26,7 +27,7 @@ export class CreateDepositBuilder {
         endDate: new FormControl(null, [Validators.required]),
         duration: new FormControl(null, [Validators.required]),
         amount: new FormControl(null, [Validators.required]),
-        userIdentificationNumber: new FormControl(null, [Validators.required]),
+        userId: new FormControl(null, [Validators.required]),
       },
       [
         compareDatesValidator(
@@ -39,6 +40,7 @@ export class CreateDepositBuilder {
           'duration',
           ValidatorDateCompareMode.Less
         ),
+        areContractFieldsAppropToChoosenDeposit(),
       ]
     );
   }

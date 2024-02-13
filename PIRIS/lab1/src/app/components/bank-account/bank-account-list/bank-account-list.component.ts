@@ -14,14 +14,6 @@ import { BankAccountInfo } from './bank-account-list.typings';
   styleUrl: './bank-account-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BankAccountListComponent implements OnInit, OnChanges {
+export class BankAccountListComponent {
   @Input() public accountsInfo: BankAccountInfo[] = [];
-
-  ngOnInit(): void {
-    console.log('accountsInfo: ', this.accountsInfo);
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('accountsInfo :', this.accountsInfo);
-  }
 }

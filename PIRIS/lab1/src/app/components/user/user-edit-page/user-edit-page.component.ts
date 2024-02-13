@@ -40,7 +40,6 @@ export class UserEditPageComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    console.log('init');
     this.handleRouteParams();
   }
 
@@ -68,7 +67,6 @@ export class UserEditPageComponent implements OnInit {
   private handleRouteParams(): void {
     this.activatedRoute.params
       .pipe(
-        tap((params) => console.log('params: ', params)),
         map((params) => params['id']),
         filter((id) => !!id),
         tap((id) => (this.userId = id)),

@@ -1,4 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+} from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CreateDepositModalComponent } from '../deposit/create-deposit-modal/create-deposit-modal.component';
 import { Router } from '@angular/router';
@@ -19,7 +23,8 @@ export class BankAccountPageComponent {
   constructor(
     private matDialog: MatDialog,
     private router: Router,
-    private bankAccountPageService: BankAccountPageService
+    private bankAccountPageService: BankAccountPageService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   public showCreateDepositModal(): void {
@@ -37,7 +42,10 @@ export class BankAccountPageComponent {
           return this.bankAccountPageService.createDepositContract(contract);
         })
       )
-      .subscribe();
+      .subscribe(() => {
+        this.accountsInfo$ = this.bankAccountPageService.getAccountsInfo();
+        this.changeDetectorRef.detectChanges();
+      });
   }
 
   public goToHomePage(): void {

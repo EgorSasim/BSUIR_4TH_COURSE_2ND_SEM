@@ -29,6 +29,7 @@ export class BankAccountPageService {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 identificationNumber: user.identificationNumber,
+                id: user.id,
               }),
             })
           )
@@ -36,11 +37,11 @@ export class BankAccountPageService {
       ),
       map((userData) => userData.filter((data) => !!data.depositContract?.id)),
       map((data) => {
-        console.log('data: ', data);
         return data.map((dataItem) => ({
           userFirstName: dataItem.userData.firstName,
           userLastName: dataItem.userData.lastName,
           userIdentificationNumber: dataItem.userData.identificationNumber,
+          userId: dataItem.userData.id,
           depositContractSerialNumber: dataItem.depositContract.serialNumber,
           depositContractName: dataItem.depositContract.deposit.name,
           depositContractId: dataItem.depositContract.id,
