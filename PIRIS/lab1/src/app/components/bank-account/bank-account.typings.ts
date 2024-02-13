@@ -8,6 +8,7 @@ export interface Account {
   credit: number;
   balance: AccountBalanceType;
   name: AccountName;
+  id?: string;
 }
 
 export enum AccountActivity {

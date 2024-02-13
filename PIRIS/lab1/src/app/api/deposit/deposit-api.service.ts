@@ -10,6 +10,7 @@ import { User } from '../../components/user/user.typings';
 import { DEPOSIT_CONTRACTS_COLLECTION_NAME } from './deposit-api.constants';
 import { ACCOUNT_COLLECTION_NAME } from '../account/account-api.constants';
 import { createDepositAccounts } from '../../common/helpers/account';
+import { DepositSearchParams } from './deposit-api.typings';
 
 @Injectable({
   providedIn: 'root',
@@ -39,20 +40,38 @@ export class DepositApiService {
     ) as Observable<any>;
   }
 
-  public getDeposit(userId: string): Observable<DepositContract> {
+  public getAllUsersDeposits(userId: string): Observable<DepositContract[]> {
     const userRef = this.angularFireStore
       .collection(USERS_COLLECTION_NAME)
       .doc(userId)
       .collection(DEPOSIT_CONTRACTS_COLLECTION_NAME)
       .get()
       .pipe(
-        map((docsRef) => {
-          const data = docsRef.docs[0]?.data();
-          const id = docsRef.docs[0]?.id;
-          return { ...(data as DepositContract), id };
+        map((refs) => {
+          return refs.docs.map((doc) => {
+            const data = doc.data();
+            const id = doc.id;
+            return { ...(data as DepositContract), id };
+          });
         })
       );
 
     return userRef;
+  }
+
+  public getDeposit(
+    searchParams: DepositSearchParams
+  ): Observable<DepositContract> {
+    if (searchParams.userId) {
+      return this.angularFireStore
+        .collection(USERS_COLLECTION_NAME)
+        .doc(searchParams.userId)
+        .collection(DEPOSIT_CONTRACTS_COLLECTION_NAME)
+        .doc(searchParams.depositId)
+        .get()
+        .pipe(map((depositRef) => depositRef.data() as DepositContract));
+    }
+
+    return of();
   }
 }

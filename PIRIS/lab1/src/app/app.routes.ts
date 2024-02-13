@@ -3,6 +3,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { UserEditPageComponent } from './components/user/user-edit-page/user-edit-page.component';
 import { UserPageComponent } from './components/user/user-page/user-page.component';
 import { BankAccountPageComponent } from './components/bank-account/bank-account-page/bank-account-page.component';
+import { DepositPageComponent } from './components/bank-account/deposit/deposit-page/deposit-page.component';
 
 export const routes: Routes = [
   {
@@ -40,6 +41,19 @@ export const routes: Routes = [
     ],
   },
 
+  {
+    path: 'deposit',
+    children: [
+      {
+        path: ':id',
+        component: DepositPageComponent,
+        loadChildren: () =>
+          import(
+            './components/bank-account/deposit/deposit-page/deposit-page.module'
+          ).then((m) => m.DepositPageModule),
+      },
+    ],
+  },
   {
     path: 'bank-account-page',
     component: BankAccountPageComponent,

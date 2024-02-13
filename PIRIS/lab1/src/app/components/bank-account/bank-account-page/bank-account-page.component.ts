@@ -8,7 +8,8 @@ import { CreateDepositModalComponent } from '../deposit/create-deposit-modal/cre
 import { Router } from '@angular/router';
 import { BankAccountPageService } from './bank-account-page.service';
 import { DepositContract } from '../deposit/deposit.typings';
-import { filter, switchMap, tap } from 'rxjs';
+import { Observable, filter, switchMap, tap } from 'rxjs';
+import { BankAccountInfo } from '../bank-account-list/bank-account-list.typings';
 
 @Component({
   selector: 'app-bank-account-page',
@@ -18,7 +19,8 @@ import { filter, switchMap, tap } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BankAccountPageComponent {
-  public accountsInfo$ = this.bankAccountPageService.getAccountsInfo();
+  public accountsInfo$: Observable<BankAccountInfo[]> =
+    this.bankAccountPageService.getAccountsInfo();
 
   constructor(
     private matDialog: MatDialog,
@@ -38,7 +40,6 @@ export class BankAccountPageComponent {
       .pipe(
         filter((data) => !!data),
         switchMap((contract: DepositContract) => {
-          console.log('contract: ', contract);
           return this.bankAccountPageService.createDepositContract(contract);
         })
       )

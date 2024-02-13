@@ -1,6 +1,10 @@
-export function getRandomString(length: number): string {
-  const chars =
-    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
+export function getRandomString(
+  length: number,
+  withSpecialChars: boolean = false
+): string {
+  const chars = withSpecialChars
+    ? 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()'
+    : 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   const charLength = chars.length;
   let result = '';
   for (let i = 0; i < length; i++) {

@@ -55,7 +55,6 @@ export class CreateDepositModalComponent {
     private createDepositModalService: CreateDepositModalService
   ) {
     this.handleDepositNameChange();
-    this.formGroup.valueChanges.subscribe((val) => console.log(val.userId));
   }
 
   public onClose(): void {

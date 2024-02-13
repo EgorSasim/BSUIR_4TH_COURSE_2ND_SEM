@@ -8,11 +8,16 @@
 
 <mat-list role="list">
   <ng-container *ngFor="let accountInfo of accountsInfo; let i = index">
-    <mat-list-item role="listitem">
-      <app-bank-account-card
-        [accountInfo]="accountInfo"
-      ></app-bank-account-card>
-    </mat-list-item>
+    <ng-container *ngFor="let contract of accountInfo.depositContracts">
+      <mat-list-item
+        role="listitem"
+        (click)="goToDepositPage(contract.id, accountInfo.user.id)"
+      >
+        <app-bank-account-card
+          [accountInfo]="{ contract: contract, user: accountInfo.user }"
+        ></app-bank-account-card>
+      </mat-list-item>
+    </ng-container>
     <mat-divider *ngIf="accountsInfo?.length - 1 !== i"></mat-divider>
   </ng-container>
 </mat-list>
