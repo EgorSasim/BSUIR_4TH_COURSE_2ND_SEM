@@ -62,16 +62,38 @@ export class DepositApiService {
   public getDeposit(
     searchParams: DepositSearchParams
   ): Observable<DepositContract> {
-    if (searchParams.userId) {
-      return this.angularFireStore
-        .collection(USERS_COLLECTION_NAME)
-        .doc(searchParams.userId)
-        .collection(DEPOSIT_CONTRACTS_COLLECTION_NAME)
-        .doc(searchParams.depositId)
-        .get()
-        .pipe(map((depositRef) => depositRef.data() as DepositContract));
-    }
+    return this.angularFireStore
+      .collection(USERS_COLLECTION_NAME)
+      .doc(searchParams.userId)
+      .collection(DEPOSIT_CONTRACTS_COLLECTION_NAME)
+      .doc(searchParams.depositId)
+      .get()
+      .pipe(
+        map((depositRef) => {
+          return {
+            ...(depositRef.data() as DepositContract),
+            id: depositRef.id,
+          };
+        }),
+        map((data) => {
+          return {
+            ...data,
+            startDate: new Date(data.startDate['seconds'] * 1000),
+            endDate: new Date(data.endDate['seconds'] * 1000),
+            duration: new Date(data.duration['seconds'] * 1000),
+          };
+        })
+      );
+  }
 
-    return of();
+  public removeDeposit(userId: string, id: string): Observable<void> {
+    return from(
+      this.angularFireStore
+        .collection(USERS_COLLECTION_NAME)
+        .doc(userId)
+        .collection(DEPOSIT_CONTRACTS_COLLECTION_NAME)
+        .doc(id)
+        .delete()
+    );
   }
 }

@@ -1,6 +1,7 @@
 import { FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { DepositContract } from '../../components/bank-account/deposit/deposit.typings';
 import { ConvertToForm } from '../typings/form.typings';
+import { getMonthDifference } from '../helpers/dates';
 
 export function areContractFieldsAppropToChoosenDeposit(): ValidatorFn {
   return (
@@ -16,14 +17,14 @@ export function areContractFieldsAppropToChoosenDeposit(): ValidatorFn {
       return null;
     }
 
-    const choosenDuration =
-      controls.endDate.value.getTime() - controls.startDate.value.getTime();
+    const choosenDuration = getMonthDifference(
+      controls.endDate.value,
+      controls.startDate.value
+    );
 
     if (
-      choosenDuration <
-        controls.deposit.value.minDurationTime.getTime() - Date.now() ||
-      choosenDuration >
-        controls.deposit.value.maxDurationTime.getTime() - Date.now()
+      choosenDuration < controls.deposit.value.minDurationTime ||
+      choosenDuration > controls.deposit.value.maxDurationTime
     ) {
       return { invalidDepositDuration: true };
     }

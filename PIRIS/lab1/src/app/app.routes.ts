@@ -4,6 +4,7 @@ import { UserEditPageComponent } from './components/user/user-edit-page/user-edi
 import { UserPageComponent } from './components/user/user-page/user-page.component';
 import { BankAccountPageComponent } from './components/bank-account/bank-account-page/bank-account-page.component';
 import { DepositPageComponent } from './components/bank-account/deposit/deposit-page/deposit-page.component';
+import { BankEmuPageComponent } from './components/bank-emu/bank-emu-page/bank-emu-page.component';
 
 export const routes: Routes = [
   {
@@ -61,5 +62,13 @@ export const routes: Routes = [
       import(
         './components/bank-account/bank-account-page/bank-account-page.module'
       ).then((m) => m.BankAccountPageModule),
+  },
+  {
+    path: 'bank-emu',
+    component: BankEmuPageComponent,
+    loadChildren: () =>
+      import('./components/bank-emu/bank-emu-page/bank-emu-page.module').then(
+        (m) => m.BankEmuPageModule
+      ),
   },
 ];

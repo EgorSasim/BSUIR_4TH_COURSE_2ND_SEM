@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Observable, combineLatest, forkJoin, map, of, switchMap } from 'rxjs';
+import {
+  Observable,
+  combineLatest,
+  forkJoin,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { DepositContract } from '../deposit.typings';
 import { DepositSearchParams } from '../../../../api/deposit/deposit-api.typings';
 import { DepositApiService } from '../../../../api/deposit/deposit-api.service';
@@ -33,7 +41,12 @@ export class DepositPageService {
           depositContract: this.getDeposit({ depositId, userId }),
           accounts: this.accountApiService.getAccounts({ depositId, userId }),
         })
-      )
+      ),
+      tap((data) => console.log(data))
     );
+  }
+
+  public removeDeposit(userId: string, id: string): Observable<void> {
+    return this.depositApiService.removeDeposit(userId, id);
   }
 }

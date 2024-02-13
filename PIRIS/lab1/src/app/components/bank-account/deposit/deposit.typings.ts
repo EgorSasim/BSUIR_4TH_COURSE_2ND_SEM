@@ -14,8 +14,8 @@ export interface DepositContract {
 
 export interface Deposit {
   name: string;
-  minDurationTime: Date;
-  maxDurationTime: Date;
+  minDurationTime: number;
+  maxDurationTime: number;
   minAmount: number;
   type: DepositType;
   percent: number;

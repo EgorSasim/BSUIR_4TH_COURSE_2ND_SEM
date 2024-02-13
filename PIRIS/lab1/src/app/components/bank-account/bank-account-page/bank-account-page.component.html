@@ -1,9 +1,13 @@
 <button mat-raised-button color="primary" (click)="goToHomePage()">
   <mat-icon>arrow_back</mat-icon>
 </button>
-<app-bank-account-list
-  [accountsInfo]="accountsInfo$ | async"
-></app-bank-account-list>
+<ng-container *ngIf="accountsInfo$ | async as accountsInfo">
+  <app-bank-account-list
+    *ngIf="accountsInfo.length; else noAccount"
+    [accountsInfo]="accountsInfo$ | async"
+  ></app-bank-account-list>
+</ng-container>
+<ng-template #noAccount><h1>No accounts created</h1></ng-template>
 <div class="bank-account-page__controls">
   <button mat-raised-button color="primary" (click)="showCreateDepositModal()">
     Create Deposit
