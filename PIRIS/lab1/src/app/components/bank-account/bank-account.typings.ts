@@ -1,26 +1,16 @@
 import { User } from '../user/user.typings';
 
-export interface Account {
+export interface MainAccount {
   serialNumber: string;
-  code: string;
-  activity: AccountActivity;
   debit: number;
-  credit: number;
-  balance: AccountBalanceType;
-  name: AccountName;
   id?: string;
 }
 
-export enum AccountActivity {
-  Active = 'Active',
-  Passive = 'Passive',
-  ActivePassive = 'Active-Passive',
-}
-
-export enum AccountBalanceType {
-  Debit = 'Debit',
-  Credit = 'Credit',
-  Nullable = 'Nullable',
+export interface PercentageAccount {
+  serialNumber: string;
+  debit: number;
+  id?: string;
+  totalAmount: number;
 }
 
 export type AccountName =

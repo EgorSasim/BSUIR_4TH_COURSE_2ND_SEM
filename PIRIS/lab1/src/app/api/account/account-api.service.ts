@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AccountSearchParms, DepositAccounts } from './account-api.typings';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, from, map, switchMap, tap } from 'rxjs';
 import { USERS_COLLECTION_NAME } from '../user/user-api.constants';
 import { ACCOUNT_COLLECTION_NAME } from './account-api.constants';
 import { DEPOSIT_CONTRACTS_COLLECTION_NAME } from '../deposit/deposit-api.constants';
@@ -30,5 +30,39 @@ export class AccountApiService {
           };
         })
       );
+  }
+
+  public updateDepositContractAccountsData({
+    userId,
+    depositId,
+    depositAccounts,
+  }: {
+    userId: string;
+    depositId: string;
+    depositAccounts: DepositAccounts;
+  }) {
+    const accountsId$ = from(
+      this.angularFireStore
+        .collection(USERS_COLLECTION_NAME)
+        .doc(userId)
+        .collection(DEPOSIT_CONTRACTS_COLLECTION_NAME)
+        .doc(depositId)
+        .collection(ACCOUNT_COLLECTION_NAME)
+        .ref.get()
+        .then((data) => data.docs[0].id)
+    );
+
+    return accountsId$.pipe(
+      switchMap((id) =>
+        this.angularFireStore
+          .collection(USERS_COLLECTION_NAME)
+          .doc(userId)
+          .collection(DEPOSIT_CONTRACTS_COLLECTION_NAME)
+          .doc(depositId)
+          .collection(ACCOUNT_COLLECTION_NAME)
+          .doc(id)
+          .update(depositAccounts)
+      )
+    );
   }
 }

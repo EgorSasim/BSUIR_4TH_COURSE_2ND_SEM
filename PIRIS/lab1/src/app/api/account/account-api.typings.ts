@@ -1,4 +1,7 @@
-import { Account } from '../../components/bank-account/bank-account.typings';
+import {
+  MainAccount,
+  PercentageAccount,
+} from '../../components/bank-account/bank-account.typings';
 
 export interface AccountSearchParms {
   userId: string;
@@ -6,6 +9,6 @@ export interface AccountSearchParms {
 }
 
 export interface DepositAccounts {
-  main: Account;
-  percents: Account;
+  main: MainAccount;
+  percents: PercentageAccount;
 }

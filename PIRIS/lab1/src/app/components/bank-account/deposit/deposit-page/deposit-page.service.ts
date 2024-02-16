@@ -13,7 +13,7 @@ import { DepositSearchParams } from '../../../../api/deposit/deposit-api.typings
 import { DepositApiService } from '../../../../api/deposit/deposit-api.service';
 import { ActivatedRoute } from '@angular/router';
 import { AccountApiService } from '../../../../api/account/account-api.service';
-import { DepositWithAccounts } from './deposit-page.typings';
+import { DepositContractWithAccounts } from './deposit-page.typings';
 
 @Injectable()
 export class DepositPageService {
@@ -29,7 +29,7 @@ export class DepositPageService {
     return this.depositApiService.getDeposit(searchParams);
   }
 
-  public handleDepositIdChange(): Observable<DepositWithAccounts> {
+  public handleDepositIdChange(): Observable<DepositContractWithAccounts> {
     return combineLatest({
       depositId: this.activatedRoute.params.pipe(map((params) => params['id'])),
       userId: this.activatedRoute.queryParamMap.pipe(
@@ -41,8 +41,7 @@ export class DepositPageService {
           depositContract: this.getDeposit({ depositId, userId }),
           accounts: this.accountApiService.getAccounts({ depositId, userId }),
         })
-      ),
-      tap((data) => console.log(data))
+      )
     );
   }
 

@@ -3,37 +3,3 @@
 </button>
 
 <h1>Bank emu</h1>
-
-<ng-container *ngIf="bankChangesInfo$ | async as bankChangesInfo">
-  <h2>Working deposits</h2>
-  <mat-list role="list">
-    <mat-list-item
-      *ngFor="let deposit of bankChangesInfo.workingDeposits"
-      role="listitem"
-      >{{ deposit.name }} {{ deposit.amount }} {{ deposit.duration }}months
-      {{ deposit.percent }}%</mat-list-item
-    >
-    <mat-divider></mat-divider>
-  </mat-list>
-
-  <h2>Expired deposits</h2>
-  <mat-list role="list">
-    <mat-list-item
-      *ngFor="let deposit of bankChangesInfo.expiredDeposits"
-      role="listitem"
-      >{{ deposit.name }} {{ deposit.amount }} {{ deposit.duration }}
-      {{ deposit.percent }}</mat-list-item
-    >
-    <mat-divider></mat-divider>
-  </mat-list>
-
-  <h3>Capital: {{ bankChangesInfo.capital }}</h3>
-</ng-container>
-
-<button mat-raised-button color="primary" (click)="showDepositAddModal()">
-  Add deposit
-</button>
-
-<button mat-raised-button color="primary" (click)="tick()">Tick</button>
-
-<button mat-raised-button color="primary" (click)="reset()">Reset</button>

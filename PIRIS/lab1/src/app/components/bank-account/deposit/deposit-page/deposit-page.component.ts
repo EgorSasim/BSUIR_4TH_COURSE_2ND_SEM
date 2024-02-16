@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { DepositPageService } from './deposit-page.service';
-import { DepositWithAccounts } from './deposit-page.typings';
+import { DepositContractWithAccounts } from './deposit-page.typings';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { getMonthDifference } from '../../../../common/helpers/dates';
@@ -13,7 +13,7 @@ import { getMonthDifference } from '../../../../common/helpers/dates';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DepositPageComponent {
-  public depositData$: Observable<DepositWithAccounts> =
+  public depositData$: Observable<DepositContractWithAccounts> =
     this.depositPageService.handleDepositIdChange();
 
   constructor(

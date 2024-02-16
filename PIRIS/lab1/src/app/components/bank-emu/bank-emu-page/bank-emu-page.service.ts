@@ -1,59 +1,140 @@
 import { Injectable } from '@angular/core';
-import { BankEmuChangesInfo, BankEmuDeposit } from '../bank-emu.typings';
-import { BehaviorSubject, ReplaySubject } from 'rxjs';
+import {
+  Observable,
+  ReplaySubject,
+  forkJoin,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
+import { UserApiService } from '../../../api/user/user-api.service';
+import { DepositApiService } from '../../../api/deposit/deposit-api.service';
+import { AccountApiService } from '../../../api/account/account-api.service';
+import { DepositContractWithAccounts } from '../../bank-account/deposit/deposit-page/deposit-page.typings';
+import { PercentageAccount } from '../../bank-account/bank-account.typings';
+import {
+  AVAREAGE_DAY_PER_MONTH,
+  HOUR_PER_DAY,
+  MILLISECONDS_PER_SECOND,
+  MINUTES_PER_HOUR,
+  SECONDS_PER_MINUTE,
+} from '../../../common/constants/time';
+import { DepositContract } from '../../bank-account/deposit/deposit.typings';
 
 @Injectable()
 export class BankEmuPageService {
-  public bankChangesInfo$: ReplaySubject<BankEmuChangesInfo> =
-    new ReplaySubject(1);
-  private startCapital: number = 100_000_000_000;
-  private deposits: BankEmuDeposit[] = [];
-  private currMonth: number = 0;
+  public depositContractWithAccounts$: ReplaySubject<
+    DepositContractWithAccounts[]
+  > = new ReplaySubject(1);
 
-  constructor() {
-    this.updateBankEmuChangeInfo();
-  }
+  constructor(
+    private userApiService: UserApiService,
+    private depositApiService: DepositApiService,
+    private accountApiService: AccountApiService
+  ) {}
 
-  public addDeposit(deposit: BankEmuDeposit) {
-    this.deposits.push(deposit);
-    this.startCapital += deposit.amount;
-  }
-
-  public tick(): void {
-    this.currMonth += 1;
-    this.startCapital -= this.getDepositsPercentsIncome(this.deposits);
-    this.updateBankEmuChangeInfo();
-  }
-
-  public updateBankEmuChangeInfo() {
-    this.bankChangesInfo$.next({
-      currMonth: this.currMonth,
-      capital: this.startCapital,
-      percentsIncome: this.getDepositsPercentsIncome(this.deposits),
-      expiredDeposits: this.deposits.filter(
-        (deposit) => deposit.duration <= this.currMonth
+  public getDepositContractsWithAccounts(): Observable<
+    DepositContractWithAccounts[]
+  > {
+    return this.userApiService.getUsers().pipe(
+      switchMap((users) =>
+        forkJoin(
+          users.map((user) =>
+            this.depositApiService.getAllUsersDeposits(user.id)
+          )
+        )
       ),
-      workingDeposits: this.deposits.filter(
-        (deposit) => deposit.duration > this.currMonth
-      ),
+      map((deposits) => deposits.flat(1)),
+      tap((deposits) => console.log('deposits: ', deposits)),
+      switchMap((deposits) =>
+        forkJoin(
+          deposits.map((deposit) =>
+            forkJoin({
+              accounts: this.accountApiService.getAccounts({
+                depositId: deposit.id,
+                userId: deposit.userId,
+              }),
+              depositContract: of(
+                this.getDepositContractWithNormalDateForma(deposit)
+              ),
+            })
+          )
+        )
+      )
+    );
+  }
+
+  public updateDepositContractAccountsData(
+    contract: DepositContractWithAccounts
+  ): any {
+    return this.accountApiService.updateDepositContractAccountsData({
+      userId: contract.depositContract.userId,
+      depositId: contract.depositContract.id,
+      depositAccounts: contract.accounts,
     });
   }
 
-  public reset(): void {
-    this.currMonth = 0;
-    this.startCapital = 100_000_000_000;
-    this.deposits = [];
-    this.updateBankEmuChangeInfo();
+  public calculateInitialValues(): void {
+    this.getDepositContractsWithAccounts()
+      .pipe(
+        switchMap((depositContractsWithAccounts) =>
+          forkJoin([
+            depositContractsWithAccounts.map((depositContractWithAccounts) =>
+              this.updateDepositContractAccountsData({
+                accounts: {
+                  ...depositContractWithAccounts.accounts,
+                  percents: {
+                    ...depositContractWithAccounts.accounts.percents,
+                    totalAmount: this.setPercentAccountInitialAmount(
+                      depositContractWithAccounts.accounts.main.debit,
+                      depositContractWithAccounts.depositContract.deposit
+                        .percent,
+                      depositContractWithAccounts.depositContract.startDate
+                    ),
+                  },
+                },
+                depositContract: depositContractWithAccounts.depositContract,
+              })
+            ),
+          ])
+        )
+      )
+      .subscribe(() => 'account recalculation completed calculation');
   }
 
-  private getDepositsPercentsIncome(deposits: BankEmuDeposit[]): number {
-    return deposits.reduce(
-      (acc, deposit) =>
-        (acc +=
-          deposit.duration <= this.currMonth
-            ? 0
-            : (deposit.amount * deposit.percent) / 12),
-      0
-    );
+  private setPercentAccountInitialAmount(
+    amount: number,
+    percent: number,
+    startDate: Date
+  ): PercentageAccount['totalAmount'] {
+    if (Date.now() < startDate.getTime()) {
+      return 0;
+    }
+    let res = 0;
+    const daysBeforeNow =
+      Math.round(
+        (Date.now() - startDate.getTime()) /
+          MILLISECONDS_PER_SECOND /
+          SECONDS_PER_MINUTE /
+          MINUTES_PER_HOUR /
+          HOUR_PER_DAY
+      ) % AVAREAGE_DAY_PER_MONTH;
+    for (let i = 0; i < daysBeforeNow; ++i) {
+      res += (amount * percent) / 100 / 12 / AVAREAGE_DAY_PER_MONTH;
+    }
+
+    return res;
+  }
+
+  private getDepositContractWithNormalDateForma(
+    depositContract: DepositContract
+  ): DepositContract {
+    return {
+      ...depositContract,
+      startDate: new Date(depositContract.startDate['seconds'] * 1000),
+      endDate: new Date(depositContract.endDate['seconds'] * 1000),
+      duration: new Date(depositContract.duration['seconds'] * 1000),
+    };
   }
 }
