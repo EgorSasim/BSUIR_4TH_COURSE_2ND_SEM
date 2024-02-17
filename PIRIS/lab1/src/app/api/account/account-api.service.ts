@@ -40,7 +40,7 @@ export class AccountApiService {
     userId: string;
     depositId: string;
     depositAccounts: DepositAccounts;
-  }) {
+  }): Observable<void> {
     const accountsId$ = from(
       this.angularFireStore
         .collection(USERS_COLLECTION_NAME)

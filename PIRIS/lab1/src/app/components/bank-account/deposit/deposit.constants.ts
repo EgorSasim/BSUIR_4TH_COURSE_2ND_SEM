@@ -29,7 +29,7 @@ export const DEPOSITS: Deposit[] = [
   {
     name: 'Save',
     currencyType: CurrencyType.BYN,
-    minDurationTime: 3,
+    minDurationTime: 1,
     maxDurationTime: 3,
     minAmount: 1000,
     percent: 5,

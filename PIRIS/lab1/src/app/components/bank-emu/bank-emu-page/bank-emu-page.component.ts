@@ -14,7 +14,11 @@ import { DepositContractWithAccounts } from '../../bank-account/deposit/deposit-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BankEmuPageComponent {
-  public depositContractWithAccounts$: Observable<
+  public readonly currentDate$ = this.bankEmuPageService.currentDate$;
+  public readonly bankAccountVal$ = this.bankEmuPageService.bankAccountVal$;
+  public readonly isLoading$ = this.bankEmuPageService.isLoading$;
+
+  public depositContractsWithAccounts$: Observable<
     DepositContractWithAccounts[]
   > = this.bankEmuPageService.depositContractWithAccounts$;
 
@@ -27,5 +31,9 @@ export class BankEmuPageComponent {
 
   public goToHomePage(): void {
     this.router.navigate(['home']);
+  }
+
+  public handleTick(): void {
+    this.bankEmuPageService.recalculateDepositValues();
   }
 }

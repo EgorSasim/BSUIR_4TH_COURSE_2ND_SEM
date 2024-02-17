@@ -5,6 +5,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [BankEmuPageComponent],
@@ -14,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatListModule,
     CommonModule,
     MatIconModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class BankEmuPageModule {}

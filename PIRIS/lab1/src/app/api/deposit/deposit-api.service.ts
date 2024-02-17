@@ -53,7 +53,12 @@ export class DepositApiService {
             const id = doc.id;
             return { ...(data as DepositContract), id };
           });
-        })
+        }),
+        map((depositContracts) =>
+          depositContracts.map((depositContract) =>
+            this.getDepositContractWithNormalDateForm(depositContract)
+          )
+        )
       );
 
     return userRef;
@@ -95,5 +100,16 @@ export class DepositApiService {
         .doc(id)
         .delete()
     );
+  }
+
+  private getDepositContractWithNormalDateForm(
+    depositContract: DepositContract
+  ): DepositContract {
+    return {
+      ...depositContract,
+      startDate: new Date(depositContract.startDate['seconds'] * 1000),
+      endDate: new Date(depositContract.endDate['seconds'] * 1000),
+      duration: new Date(depositContract.duration['seconds'] * 1000),
+    };
   }
 }
