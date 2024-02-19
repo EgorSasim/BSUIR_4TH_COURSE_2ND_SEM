@@ -1,24 +1,29 @@
 import { Injectable } from '@angular/core';
-import { AccountSearchParms, DepositAccounts } from './account-api.typings';
+import {
+  DepositAccountSearchParms,
+  DepositAccounts,
+} from './account-api.typings';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, from, map, switchMap, tap } from 'rxjs';
-import { USERS_COLLECTION_NAME } from '../user/user-api.constants';
-import { ACCOUNT_COLLECTION_NAME } from './account-api.constants';
-import { DEPOSIT_CONTRACTS_COLLECTION_NAME } from '../deposit/deposit-api.constants';
+import { USERS_COLLECTION_NAME } from '../../user/user-api.constants';
+import { DEPOSIT_CONTRACTS_COLLECTION_NAME } from '../deposit-api.constants';
+import { DEPOSIT_ACCOUNT_COLLECTION_NAME } from './account-api.constants';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AccountApiService {
+export class DepositAccountApiService {
   constructor(private angularFireStore: AngularFirestore) {}
 
-  public getAccounts(params: AccountSearchParms): Observable<DepositAccounts> {
+  public getAccounts(
+    params: DepositAccountSearchParms
+  ): Observable<DepositAccounts> {
     return this.angularFireStore
       .collection(USERS_COLLECTION_NAME)
       .doc(params.userId)
       .collection(DEPOSIT_CONTRACTS_COLLECTION_NAME)
       .doc(params.depositId)
-      .collection(ACCOUNT_COLLECTION_NAME)
+      .collection(DEPOSIT_ACCOUNT_COLLECTION_NAME)
       .get()
       .pipe(
         map((docsRef) => {
@@ -47,7 +52,7 @@ export class AccountApiService {
         .doc(userId)
         .collection(DEPOSIT_CONTRACTS_COLLECTION_NAME)
         .doc(depositId)
-        .collection(ACCOUNT_COLLECTION_NAME)
+        .collection(DEPOSIT_ACCOUNT_COLLECTION_NAME)
         .ref.get()
         .then((data) => data.docs[0].id)
     );
@@ -59,7 +64,7 @@ export class AccountApiService {
           .doc(userId)
           .collection(DEPOSIT_CONTRACTS_COLLECTION_NAME)
           .doc(depositId)
-          .collection(ACCOUNT_COLLECTION_NAME)
+          .collection(DEPOSIT_ACCOUNT_COLLECTION_NAME)
           .doc(id)
           .update(depositAccounts)
       )

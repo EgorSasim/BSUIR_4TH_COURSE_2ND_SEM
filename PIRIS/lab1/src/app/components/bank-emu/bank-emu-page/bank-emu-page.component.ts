@@ -5,6 +5,7 @@ import { DepositType } from '../../bank-account/deposit/deposit.typings';
 import { CurrencyType } from '../../../common/typings/currency.typings';
 import { Observable, ReplaySubject } from 'rxjs';
 import { DepositContractWithAccounts } from '../../bank-account/deposit/deposit-page/deposit-page.typings';
+import { CreditContractWithAccounts } from '../../bank-account/credit/credit-page/credit-page.typings';
 
 @Component({
   selector: 'app-bank-emu-page',
@@ -17,10 +18,15 @@ export class BankEmuPageComponent {
   public readonly currentDate$ = this.bankEmuPageService.currentDate$;
   public readonly bankAccountVal$ = this.bankEmuPageService.bankAccountVal$;
   public readonly isLoading$ = this.bankEmuPageService.isLoading$;
+  public readonly totalDebits$ = this.bankEmuPageService.totalDebits$;
+  public readonly totalCredits$ = this.bankEmuPageService.totalCredits$;
 
   public depositContractsWithAccounts$: Observable<
     DepositContractWithAccounts[]
   > = this.bankEmuPageService.depositContractWithAccounts$;
+  public creditContractsWithAccounts$: Observable<
+    CreditContractWithAccounts[]
+  > = this.bankEmuPageService.creditContractWithAccounts$;
 
   constructor(
     private bankEmuPageService: BankEmuPageService,
@@ -34,6 +40,6 @@ export class BankEmuPageComponent {
   }
 
   public handleTick(): void {
-    this.bankEmuPageService.recalculateDepositValues();
+    this.bankEmuPageService.recalculateValues();
   }
 }

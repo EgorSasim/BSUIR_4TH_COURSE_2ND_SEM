@@ -1,26 +1,18 @@
 import { Injectable } from '@angular/core';
-import {
-  Observable,
-  combineLatest,
-  forkJoin,
-  map,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { Observable, combineLatest, forkJoin, map, switchMap } from 'rxjs';
 import { DepositContract } from '../deposit.typings';
 import { DepositSearchParams } from '../../../../api/deposit/deposit-api.typings';
 import { DepositApiService } from '../../../../api/deposit/deposit-api.service';
 import { ActivatedRoute } from '@angular/router';
-import { AccountApiService } from '../../../../api/account/account-api.service';
 import { DepositContractWithAccounts } from './deposit-page.typings';
+import { DepositAccountApiService } from '../../../../api/deposit/account/account-api.service';
 
 @Injectable()
 export class DepositPageService {
   constructor(
     private depositApiService: DepositApiService,
     private activatedRoute: ActivatedRoute,
-    private accountApiService: AccountApiService
+    private accountApiService: DepositAccountApiService
   ) {}
 
   private getDeposit(

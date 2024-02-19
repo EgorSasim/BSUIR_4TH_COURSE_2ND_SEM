@@ -5,6 +5,7 @@ import { CreateDepositModalModule } from '../deposit/create-deposit-modal/create
 import { MatIconModule } from '@angular/material/icon';
 import { BankAccountListModule } from '../bank-account-list/bank-account-list.module';
 import { CommonModule } from '@angular/common';
+import { CreateCreditModalModule } from '../credit/create-credit-modal/create-credit-modal.module';
 
 @NgModule({
   declarations: [BankAccountPageComponent],
@@ -15,6 +16,7 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     BankAccountListModule,
     CommonModule,
+    CreateCreditModalModule,
   ],
 })
 export class BankAccountPageModule {}

@@ -1,9 +1,9 @@
 import {
-  BankAccountInfo,
+  BankDepositAccountInfo,
   BankAccountInfoDepositContract,
 } from '../bank-account-list/bank-account-list.typings';
 
 export interface BankAccountCard {
-  user: BankAccountInfo['user'];
+  user: BankDepositAccountInfo['user'];
   contract: BankAccountInfoDepositContract;
 }

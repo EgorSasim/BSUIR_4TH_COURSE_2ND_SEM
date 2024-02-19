@@ -8,9 +8,9 @@ import {
 import { USERS_COLLECTION_NAME } from '../user/user-api.constants';
 import { User } from '../../components/user/user.typings';
 import { DEPOSIT_CONTRACTS_COLLECTION_NAME } from './deposit-api.constants';
-import { ACCOUNT_COLLECTION_NAME } from '../account/account-api.constants';
 import { createDepositAccounts } from '../../common/helpers/account';
 import { DepositSearchParams } from './deposit-api.typings';
+import { DEPOSIT_ACCOUNT_COLLECTION_NAME } from './account/account-api.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +34,7 @@ export class DepositApiService {
       }),
       switchMap((depositRef) => {
         return depositRef
-          .collection(ACCOUNT_COLLECTION_NAME)
+          .collection(DEPOSIT_ACCOUNT_COLLECTION_NAME)
           .add(createDepositAccounts(depositContract));
       })
     ) as Observable<any>;

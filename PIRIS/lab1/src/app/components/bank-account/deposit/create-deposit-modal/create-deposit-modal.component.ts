@@ -10,18 +10,11 @@ import { ConvertToForm } from '../../../../common/typings/form.typings';
 import { Deposit, DepositContract } from '../deposit.typings';
 import { DEPOSITS } from '../deposit.constants';
 import { MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar, MatSnackBarAction } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { getControlErorMessage } from '../../../../common/helpers/control-errors';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { CreateDepositModalService } from './create-deposit-modal.service';
 import { UserDepositInfo } from './create-deposit-modal.typings';
-import {
-  AVERAGE_DAY_PER_MONTH,
-  HOUR_PER_DAY,
-  MILLISECONDS_PER_SECOND,
-  MINUTES_PER_HOUR,
-  SECONDS_PER_MINUTE,
-} from '../../../../common/constants/time';
 import { getMonthDifference } from '../../../../common/helpers/dates';
 
 @Component({

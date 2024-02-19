@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { BankAccountInfo } from '../bank-account-list/bank-account-list.typings';
+import { BankDepositAccountInfo } from '../bank-account-list/bank-account-list.typings';
 import { BankAccountCard } from './bank-account-card.typings';
 
 @Component({

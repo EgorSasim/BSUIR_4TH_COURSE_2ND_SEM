@@ -6,7 +6,10 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { BankAccountInfo } from './bank-account-list.typings';
+import {
+  BankCreditAccountInfo,
+  BankDepositAccountInfo,
+} from './bank-account-list.typings';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,9 +21,14 @@ import { Router } from '@angular/router';
 export class BankAccountListComponent {
   constructor(private router: Router) {}
 
-  @Input() public accountsInfo: BankAccountInfo[] = [];
+  @Input() public depositAccountsInfo: BankDepositAccountInfo[] = [];
+  @Input() public creditAccountsInfo: BankCreditAccountInfo[] = [];
 
   public goToDepositPage(depositId: string, userId: string): void {
     this.router.navigate(['deposit', depositId], { queryParams: { userId } });
+  }
+
+  public goToCreditPage(creditId: string, userId: string): void {
+    this.router.navigate(['credit', creditId], { queryParams: { userId } });
   }
 }

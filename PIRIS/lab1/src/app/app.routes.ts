@@ -5,6 +5,8 @@ import { UserPageComponent } from './components/user/user-page/user-page.compone
 import { BankAccountPageComponent } from './components/bank-account/bank-account-page/bank-account-page.component';
 import { DepositPageComponent } from './components/bank-account/deposit/deposit-page/deposit-page.component';
 import { BankEmuPageComponent } from './components/bank-emu/bank-emu-page/bank-emu-page.component';
+import path from 'path';
+import { CreditPageComponent } from './components/bank-account/credit/credit-page/credit-page.component';
 
 export const routes: Routes = [
   {
@@ -52,6 +54,19 @@ export const routes: Routes = [
           import(
             './components/bank-account/deposit/deposit-page/deposit-page.module'
           ).then((m) => m.DepositPageModule),
+      },
+    ],
+  },
+  {
+    path: 'credit',
+    children: [
+      {
+        path: ':id',
+        component: CreditPageComponent,
+        loadChildren: () =>
+          import(
+            './components/bank-account/credit/credit-page/credit-page.module'
+          ).then((m) => m.CreditPageModule),
       },
     ],
   },
