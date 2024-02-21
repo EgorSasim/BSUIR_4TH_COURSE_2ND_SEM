@@ -1,0 +1,30 @@
+<header>Account info</header>
+<h2>User: {{ userName }}</h2>
+<main class="atm-account__main">
+  <div class="atm-account__main-item">
+    <button mat-raised-button color="primary" (click)="getCurrentBalance()">
+      Get Current Balance
+    </button>
+    <span>Balance: {{ balance }}</span>
+  </div>
+  <div class="atm-account__main-item">
+    <input type="number" placeholder="amount" #moneyGetAmount />
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="getMoney(+moneyGetAmount.value)"
+    >
+      Get money
+    </button>
+  </div>
+  <div class="atm-account__main-item">
+    <input type="number" placeholder="amount" #moneyPutAmount />
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="putMoney(+moneyPutAmount.value)"
+    >
+      Put money
+    </button>
+  </div>
+</main>

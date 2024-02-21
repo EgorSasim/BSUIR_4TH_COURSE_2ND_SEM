@@ -21,7 +21,7 @@ import { getMonthDifference } from '../../../../common/helpers/dates';
   selector: 'app-create-credit-modal',
   templateUrl: './create-credit-modal.component.html',
   styleUrl: './create-credit-modal.component.scss',
-  providers: [CreateCreditModalBuilder, CreateCreditModalService],
+  providers: [CreateCreditModalBuilder, CreateCreditModalService, MatSnackBar],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateCreditModalComponent {

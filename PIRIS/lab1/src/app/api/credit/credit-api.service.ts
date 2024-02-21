@@ -87,6 +87,21 @@ export class CreditApiService {
       );
   }
 
+  public updateCredit(
+    userId: string,
+    creditId: string,
+    credit: CreditContract
+  ): Observable<void> {
+    return from(
+      this.angularFireStore
+        .collection(USERS_COLLECTION_NAME)
+        .doc(userId)
+        .collection(CREDIT_CONTRACTS_COLLECTION_NAME)
+        .doc(creditId)
+        .update(credit)
+    );
+  }
+
   public removeCredit(userId: string, id: string): Observable<void> {
     return from(
       this.angularFireStore

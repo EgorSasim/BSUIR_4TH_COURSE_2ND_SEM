@@ -5,8 +5,11 @@ import { UserPageComponent } from './components/user/user-page/user-page.compone
 import { BankAccountPageComponent } from './components/bank-account/bank-account-page/bank-account-page.component';
 import { DepositPageComponent } from './components/bank-account/deposit/deposit-page/deposit-page.component';
 import { BankEmuPageComponent } from './components/bank-emu/bank-emu-page/bank-emu-page.component';
-import path from 'path';
 import { CreditPageComponent } from './components/bank-account/credit/credit-page/credit-page.component';
+import { AtmComponent } from './components/atm/atm.component';
+import { PinPageComponent } from './components/atm/pin-page/pin-page.component';
+import { CardNumberPageComponent } from './components/atm/card-number-page/card-number-page.component';
+import { AtmAccountComponent } from './components/atm/account/atm-account.component';
 
 export const routes: Routes = [
   {
@@ -85,5 +88,35 @@ export const routes: Routes = [
       import('./components/bank-emu/bank-emu-page/bank-emu-page.module').then(
         (m) => m.BankEmuPageModule
       ),
+  },
+  {
+    path: 'atm',
+    component: AtmComponent,
+    children: [
+      {
+        path: 'pin',
+        component: PinPageComponent,
+        loadChildren: () =>
+          import('./components/atm/pin-page/pin-page.module').then(
+            (m) => m.PinPageModule
+          ),
+      },
+      {
+        path: 'card-number',
+        component: CardNumberPageComponent,
+        loadChildren: () =>
+          import(
+            './components/atm/card-number-page/card-number-page.module'
+          ).then((m) => m.CardNumberPageModule),
+      },
+      {
+        path: 'account',
+        component: AtmAccountComponent,
+        loadChildren: () =>
+          import('./components/atm/account/atm-account.module').then(
+            (m) => m.AtmAccountModule
+          ),
+      },
+    ],
   },
 ];

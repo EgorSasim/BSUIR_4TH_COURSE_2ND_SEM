@@ -18,8 +18,15 @@ export const TILES: Tile[] = [
   {
     text: "'Bank day' emu",
     color: 'lightgreen',
-    cols: 2,
+    cols: 1,
     rows: 1,
     link: 'bank-emu',
+  },
+  {
+    text: 'ATM',
+    color: 'lightgreen',
+    cols: 1,
+    rows: 1,
+    link: 'atm',
   },
 ];

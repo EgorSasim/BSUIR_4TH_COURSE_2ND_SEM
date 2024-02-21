@@ -54,7 +54,6 @@ export class BankEmuPageService {
   ) {}
 
   public calculateInitialValues(): void {
-    console.log('calc initial values');
     this.isLoading$.next(true);
     combineLatest({
       credits: this.calculateInitialCreditValues(),
@@ -85,7 +84,6 @@ export class BankEmuPageService {
     CreditContractWithAccounts[]
   > {
     return this.getCreditContractsWithAccounts().pipe(
-      tap(() => console.log('before switch map')),
       switchMap((creditContractsWithAccounts) =>
         forkJoin([
           ...creditContractsWithAccounts.map((creditContractWithAccounts) =>
@@ -106,9 +104,7 @@ export class BankEmuPageService {
           ),
         ]).pipe(defaultIfEmpty([]))
       ),
-      tap(() => console.log('after fork join: ')),
-      switchMap(() => this.getCreditContractsWithAccounts()),
-      tap((credits) => console.log('credits: ', credits))
+      switchMap(() => this.getCreditContractsWithAccounts())
     );
   }
 
@@ -136,8 +132,7 @@ export class BankEmuPageService {
           ),
         ]).pipe(defaultIfEmpty([]))
       ),
-      switchMap(() => this.getDepositContractsWithAccounts()),
-      tap((debits) => console.log('debits: ', debits))
+      switchMap(() => this.getDepositContractsWithAccounts())
     );
   }
 
@@ -371,7 +366,6 @@ export class BankEmuPageService {
   private getCreditContractsWithAccounts(): Observable<
     CreditContractWithAccounts[]
   > {
-    console.log('getCreditContractsWithAccounts');
     return this.userApiService.getUsers().pipe(
       switchMap((users) =>
         forkJoin(

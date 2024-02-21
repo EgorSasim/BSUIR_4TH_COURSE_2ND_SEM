@@ -6,6 +6,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { HeaderModule } from './components/header/header.module';
 import { UserPageModule } from './components/user/user-page/user-page.module';
+import { AtmModule } from './components/atm/atm.module';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import { UserPageModule } from './components/user/user-page/user-page.module';
     AngularFireStorageModule,
     HeaderModule,
     UserPageModule,
+    AtmModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

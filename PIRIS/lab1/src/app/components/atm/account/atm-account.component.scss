@@ -1,0 +1,10 @@
+.atm-account__main {
+  display: flex;
+  column-gap: 4rem;
+}
+
+.atm-account__main-item {
+  display: flex;
+  row-gap: 2rem;
+  flex-direction: column;
+}
