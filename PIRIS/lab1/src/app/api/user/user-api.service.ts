@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, from, map, of, tap } from 'rxjs';
+import { Observable, from, map, of, switchMap, tap } from 'rxjs';
 import { User } from '../../components/user/user.typings';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { SameUserErrorCode } from './user-api.typings';
 import { USERS_COLLECTION_NAME } from './user-api.constants';
+import { BankCardApiService } from '../bank-card/bank-card-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,10 @@ import { USERS_COLLECTION_NAME } from './user-api.constants';
 export class UserApiService {
   private usersCache: User[];
 
-  constructor(private store: AngularFirestore) {}
+  constructor(
+    private store: AngularFirestore,
+    private bankCardApiService: BankCardApiService
+  ) {}
 
   public getUsers(): Observable<User[]> {
     const usersCollectionRef: Observable<User[]> = this.store
@@ -53,8 +57,11 @@ export class UserApiService {
     if (this.isSameUserExists(user)) {
       return of();
     }
-    const usersCollectionRef = this.store.collection(USERS_COLLECTION_NAME);
-    return from(usersCollectionRef.doc().set({ ...user }));
+    return from(
+      this.store.collection(USERS_COLLECTION_NAME).add({ ...user })
+    ).pipe(
+      switchMap((ref) => this.bankCardApiService.createBankCard(ref.id))
+    ) as Observable<void>;
   }
 
   public getUser(id: string): Observable<User> {

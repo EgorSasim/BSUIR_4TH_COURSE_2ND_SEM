@@ -2,9 +2,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap, tap } from 'rxjs';
+import { BehaviorSubject, switchMap, tap } from 'rxjs';
 import { AtmAccountService } from './atm-account.service';
 import { UserApiService } from '../../../api/user/user-api.service';
 
@@ -15,7 +18,12 @@ import { UserApiService } from '../../../api/user/user-api.service';
   providers: [AtmAccountService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AtmAccountComponent {
+export class AtmAccountComponent implements OnInit {
+  @ViewChild('moneyGetAmount') public moneyGetAmountInput: ElementRef;
+  @ViewChild('moneyPutAmount') public moneyPutAmountInput: ElementRef;
+
+  public isLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   public userId: string;
   public cardId: string;
   public userName: string;
@@ -31,25 +39,37 @@ export class AtmAccountComponent {
     this.handleRouteParms();
   }
 
+  public ngOnInit(): void {
+    this.getCurrentBalance();
+  }
+
   public getCurrentBalance(): void {
+    this.isLoading$.next(true);
     this.atmAccountService
       .getCurrentBalance(this.userId)
       .subscribe((balance) => {
         this.balance = balance;
         this.changeDetectorRef.detectChanges();
+        this.isLoading$.next(false);
       });
   }
 
   public getMoney(amount: Number): void {
-    this.atmAccountService
-      .getMoney(this.userId, amount)
-      .subscribe(() => console.log('get money'));
+    this.isLoading$.next(true);
+    this.atmAccountService.getMoney(this.userId, amount).subscribe(() => {
+      console.log('get money');
+      this.moneyGetAmountInput.nativeElement.value = '';
+      this.getCurrentBalance();
+    });
   }
 
   public putMoney(amount: Number): void {
-    this.atmAccountService
-      .putMoney(this.userId, amount)
-      .subscribe(() => console.log('put money'));
+    this.isLoading$.next(true);
+    this.atmAccountService.putMoney(this.userId, amount).subscribe(() => {
+      console.log('put money');
+      this.moneyPutAmountInput.nativeElement.value = '';
+      this.getCurrentBalance();
+    });
   }
 
   private handleRouteParms(): void {

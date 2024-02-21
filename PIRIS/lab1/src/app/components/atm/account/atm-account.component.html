@@ -28,3 +28,7 @@
     </button>
   </div>
 </main>
+
+<div *ngIf="isLoading$ | async" class="atm__spinner-wrap">
+  <mat-spinner></mat-spinner>
+</div>
