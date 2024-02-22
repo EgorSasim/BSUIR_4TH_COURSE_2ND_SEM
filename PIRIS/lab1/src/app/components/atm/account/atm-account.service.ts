@@ -12,7 +12,7 @@ export class AtmAccountService {
   public getCurrentBalance(userId: string): Observable<number> {
     return this.creditApiService
       .getAllUsersCredits(userId)
-      .pipe(map((credits) => credits[0].amount));
+      .pipe(map((credits) => credits[0]?.amount));
   }
 
   public getMoney(userId, amount): Observable<void> {

@@ -47,6 +47,7 @@ export class PinPageComponent {
         this.isLoading$.next(false);
         if (!validationRes.isValid) {
           this.matSnackBar.open('invalid pin', null, { duration: 1000 });
+          return;
         }
         this.router.navigate(['atm', 'account'], {
           queryParams: { userId: this.userId, bankCardId: this.bankCardId },

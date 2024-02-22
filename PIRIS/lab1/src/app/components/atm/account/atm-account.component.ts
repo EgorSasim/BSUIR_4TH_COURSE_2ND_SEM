@@ -48,6 +48,11 @@ export class AtmAccountComponent implements OnInit {
     this.atmAccountService
       .getCurrentBalance(this.userId)
       .subscribe((balance) => {
+        if (balance != 0 && !balance) {
+          alert(`this user '${this.userName}' has no credits`);
+          this.router.navigate(['bank-account-page']);
+          return;
+        }
         this.balance = balance;
         this.changeDetectorRef.detectChanges();
         this.isLoading$.next(false);
@@ -70,6 +75,10 @@ export class AtmAccountComponent implements OnInit {
       this.moneyPutAmountInput.nativeElement.value = '';
       this.getCurrentBalance();
     });
+  }
+
+  public goToHomePage(): void {
+    this.router.navigate(['home']);
   }
 
   private handleRouteParms(): void {
