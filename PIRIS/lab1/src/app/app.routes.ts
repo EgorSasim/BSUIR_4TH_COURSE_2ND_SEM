@@ -10,6 +10,7 @@ import { AtmComponent } from './components/atm/atm.component';
 import { PinPageComponent } from './components/atm/pin-page/pin-page.component';
 import { CardNumberPageComponent } from './components/atm/card-number-page/card-number-page.component';
 import { AtmAccountComponent } from './components/atm/account/atm-account.component';
+import { AuthorPageComponent } from './components/author-page/author-page.component';
 
 export const routes: Routes = [
   {
@@ -118,5 +119,13 @@ export const routes: Routes = [
           ),
       },
     ],
+  },
+  {
+    path: 'author',
+    component: AuthorPageComponent,
+    loadChildren: () =>
+      import('./components/author-page/author-page.module').then(
+        (m) => m.AuthorPageModule
+      ),
   },
 ];
